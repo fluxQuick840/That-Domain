@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Playlist Player</title> 
 <meta charset="UTF-8">
 <style>
 .navigation {
@@ -48,10 +47,6 @@
 }
 </style>
 </head>
-<body>
-<h1>Audio Player</h1>
-<p>Placeholder Text for placeholding</p>
-<hr>
 <div class="music-container" id="music-container">
 <div class="music-info">
 <div id="title" style="text-align:center;"></div>
@@ -69,11 +64,27 @@
 <input type="range" min="1" max="100" value="100" id="volume" title="Volume">
 </div>
 <hr>
+<div id="extras">
 <details>
 <summary>Tracks</summary>
 <div id="tracksarea">
 </div>
 </details>
+<dialog id="shortcuts">
+<button id="closeKeyDialog">Close</button>
+<h3>Keyboard Shortcuts</h3>
+<table>
+<tr><th>Action</th><th>Shortcut</th></tr>
+<tr><td>Play/Pause</td><td>Space</td></tr>
+<tr><td>Rewind</td><td>Left Arrow</td></tr>
+<tr><td>Fast Forward</td><td>Right Arrow</td></tr>
+<tr><td>Previous Track</td><td>[</td></tr>
+<tr><td>Next Track</td><td>]</td></tr>
+</table>
+</dialog>
+<button id="openKeyDialog">Keyboard Shortcuts</button>
+</div>
+<p style="text-align: center;">Maintained with help from <a href="https://github.com/fbecerra07"><b>fbecerra07 </b></a></p>
 <?php 
 //get a list of files stored in the playlist folder
 $dir = 'media/playlist/';
@@ -93,6 +104,10 @@ var rwBTN = document.getElementById("rw");
 var fwBTN = document.getElementById("fw");
 var audio = document.getElementById('audio');
 var title = document.getElementById('title');
+var dialog = document.getElementById("shortcuts");
+var showDialogButton = document.getElementById("openKeyDialog");
+var hideDialogButton = document.getElementById("closeKeyDialog");
+
 
 //grab the song titles from a php array
 var songs = <?php echo json_encode($filenames); ?>;
@@ -212,7 +227,7 @@ fwBTN.addEventListener("click", fastforward);
 
 //keyboard commands
 document.addEventListener("keydown", function keyboard(event) {
-  if (event.key === "k") {
+  if (event.key === " ") {
     event.preventDefault();
     event.stopPropagation();
     playpause();
@@ -230,20 +245,21 @@ document.addEventListener("keydown", function keyboard(event) {
     nextSong();
   }
 });
-/*
-this does not work currently.
+
+//dialog events
+showDialogButton.addEventListener("click", function show(){
+dialog.show();
+});
+hideDialogButton.addEventListener("click", function hide(){
+dialog.close()
+});
 //write the playlist to the page
 document.getElementById("tracksarea").innerHTML += "<div id='songList'>\n<ul>";
 var titles = <?php echo json_encode($songs); ?>;
 for(var j = 2; j < Object.keys(titles).length; j++) {
-//split the file extension off the name
-track = titles[j].split(".")[0];
-//write an html link to the playTrack() function and pass in the current filename so user can click a song to play it
-document.getElementById("songList").innerHTML += "<li><a href='javascript:void(0)' onclick='playTrack("+titles[j]+")'>"+track+"</a>";
+document.getElementById("songList").innerHTML += "<li>"+titles[j].split(".")[0];
 }
 document.getElementById("songList").innerHTML += "</ul>";
-*/
-</script>
 
-</body>
+</script>
 </html>

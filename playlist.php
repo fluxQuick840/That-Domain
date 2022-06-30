@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title>Playlist Player</title> 
 <meta charset="UTF-8">
@@ -58,7 +59,7 @@
 </div>
 </div>
 <hr>
-<audio src="placeholder.mp3" id="audio"></audio>
+<audio id="audio"></audio>
 <div class="navigation">
 <button id="prev" class="action-btn"><i class="fas fa-backward"></i>Previous</button>
 <button id="rw">Rewind</button>
@@ -66,7 +67,6 @@
 <button id="fw">Fast Forward</button>
 <button id="next" class="action-btn"><i class="fas fa-forward"></i>Next</button>
 <input type="range" min="1" max="100" value="100" id="volume" title="Volume">
-</div>
 </div>
 <hr>
 <details>
@@ -76,7 +76,7 @@
 </details>
 <?php 
 //get a list of files stored in the playlist folder
-$dir = 'media/playlist/'; 
+$dir = 'media/playlist/';
 $filenames = array_diff(scandir($dir), array('.', '..'));
 $songs = $filenames;
 shuffle($filenames);
@@ -212,7 +212,9 @@ fwBTN.addEventListener("click", fastforward);
 
 //keyboard commands
 document.addEventListener("keydown", function keyboard(event) {
-  if(event.key == " ") {
+  if (event.key === "k") {
+    event.preventDefault();
+    event.stopPropagation();
     playpause();
   }
   else if(event.key == "ArrowRight") {
